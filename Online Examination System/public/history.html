@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Quiz History</title>
+
+   <link rel="stylesheet" href="history.css">
+
+</head>
+<body>
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+
+            <div class="brand-icon">
+                📝
+            </div>
+
+            <span>
+                Exam System
+            </span>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a
+                href="/student-panel.html"
+                class="nav-link"
+            >
+                Home
+            </a>
+
+            <button
+                class="btn-logout"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+    <div class="hero-section">
+
+        <h1 class="hero-title">
+
+            Quiz
+            <span class="highlight">
+                History
+            </span>
+
+        </h1>
+
+        <p class="hero-subtitle">
+
+            Track your previous quiz attempts
+
+        </p>
+
+    </div>
+
+    <div
+        class="history-container"
+        id="history-container"
+    ></div>
+
+    <script>
+
+        async function loadHistory() {
+
+            try {
+
+                const response = await fetch(
+                    '/api/student/history',
+                    {
+                        credentials: 'include'
+                    }
+                );
+
+                const history =
+                    await response.json();
+
+                const container =
+                    document.getElementById(
+                        'history-container'
+                    );
+
+                container.innerHTML = '';
+
+                if (history.length === 0) {
+
+                    container.innerHTML = `
+
+                        <div class="empty-state">
+
+                            <div class="empty-state-icon">
+                                📚
+                            </div>
+
+                            <h3>
+                                No Quiz History
+                            </h3>
+
+                            <p>
+                                Start attempting quizzes now.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+                history.forEach(item => {
+
+                    const card =
+                        document.createElement('div');
+
+                    card.className =
+                        'history-card';
+
+                    card.innerHTML = `
+
+                        <h2>
+                            ${item.subject_name}
+                        </h2>
+
+                        <p>
+                            Score:
+                            ${item.score}
+                            /
+                            ${item.total_questions}
+                        </p>
+
+                        <p>
+                            Percentage:
+                            ${item.percentage}%
+                        </p>
+
+                        <p>
+                            Date:
+                            ${new Date(
+                                item.submitted_at
+                            ).toLocaleDateString()}
+                        </p>
+
+                    `;
+
+                    container.appendChild(card);
+
+                });
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+        }
+
+        async function logout() {
+
+            await fetch('/api/logout', {
+                credentials: 'include'
+            });
+
+            window.location.href = '/';
+
+        }
+
+        loadHistory();
+
+    </script>
+
+</body>
+</html>

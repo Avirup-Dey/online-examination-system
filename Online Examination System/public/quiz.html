@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Quiz - Exam System</title>
+
+    <link rel="stylesheet" href="quiz.css">
+
+</head>
+<body>
+
+    <div class="header">
+
+        <button
+            class="btn-back"
+            onclick="goBack()"
+        >
+            ← Back
+        </button>
+
+        <h1 id="quiz-title">
+            Quiz
+        </h1>
+
+        <div class="timer-box" id="timer">
+             10:00
+        </div>
+
+    </div>
+
+    <div
+        class="progress-box"
+        id="progress-box"
+    ></div>
+
+    <div
+        class="quiz-container"
+        id="quiz-container"
+    ></div>
+
+    <div
+        class="submit-container"
+        id="submit-container"
+    >
+
+        <button
+            class="btn-submit"
+            onclick="submitQuiz()"
+        >
+            Submit Quiz
+        </button>
+
+    </div>
+
+    <script>
+
+        let quizId;
+
+        let questions = [];
+
+        let timeLeft = 600;
+
+        let timerInterval;
+
+        function getParams() {
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            return {
+                id: params.get('id'),
+                name: params.get('name')
+            };
+
+        }
+
+        async function loadQuiz() {
+
+            const { id, name } = getParams();
+
+            quizId = id;
+
+            document.getElementById(
+                'quiz-title'
+            ).textContent = name;
+
+            try {
+
+                const response = await fetch(
+                    `/api/student/quiz/${id}`,
+                    {
+                        credentials: 'include'
+                    }
+                );
+
+                questions =
+                    await response.json();
+
+                if (questions.length === 0) {
+
+                    document.getElementById(
+                        'quiz-container'
+                    ).innerHTML = `
+
+                        <div class="result-card">
+
+                            <div class="result-icon">
+                                📝
+                            </div>
+
+                            <h2 class="result-title">
+                                No Questions Yet
+                            </h2>
+
+                            <p class="result-details">
+                                Questions will appear here once added by admin.
+                            </p>
+
+                            <a
+                                href="/student-panel.html"
+                                class="btn-home"
+                            >
+                                Back to Home
+                            </a>
+
+                        </div>
+
+                    `;
+
+                    document.getElementById(
+                        'submit-container'
+                    ).style.display = 'none';
+
+                    return;
+
+                }
+
+                renderQuestions();
+
+                startTimer();
+
+            } catch (error) {
+
+                console.log(error);
+
+                alert('Failed to load quiz');
+
+            }
+
+        }
+
+        function startTimer() {
+
+            timerInterval = setInterval(() => {
+
+                timeLeft--;
+
+                const minutes =
+                    Math.floor(timeLeft / 60);
+
+                const seconds =
+                    timeLeft % 60;
+
+                document.getElementById(
+                    'timer'
+                ).textContent =
+
+                    `🚨${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+
+                    clearInterval(timerInterval);
+
+                    alert(
+                        'Time is up! Quiz submitting automatically.'
+                    );
+
+                    submitQuiz();
+
+                }
+
+            }, 1000);
+
+        }
+
+        function renderQuestions() {
+
+            const container =
+                document.getElementById(
+                    'quiz-container'
+                );
+
+            const progressBox =
+                document.getElementById(
+                    'progress-box'
+                );
+
+            container.innerHTML = '';
+
+            progressBox.innerHTML = `
+                Total Questions:
+                ${questions.length}
+            `;
+
+            questions.forEach((q, index) => {
+
+                const card =
+                    document.createElement('div');
+
+                card.className =
+                    'question-card';
+
+                card.innerHTML = `
+
+                    <div class="question-number">
+
+                        Question
+                        ${index + 1}
+                        of
+                        ${questions.length}
+
+                    </div>
+
+                    <div class="question-text">
+
+                        ${q.question_text}
+
+                    </div>
+
+                    <div class="options">
+
+                        <div
+                            class="option"
+                            data-index="${index}"
+                            data-option="1"
+                            onclick="selectOption(${index}, 1)"
+                        >
+
+                            <span class="option-letter">
+                                A
+                            </span>
+
+                            <span>
+                                ${q.option1}
+                            </span>
+
+                        </div>
+
+                        <div
+                            class="option"
+                            data-index="${index}"
+                            data-option="2"
+                            onclick="selectOption(${index}, 2)"
+                        >
+
+                            <span class="option-letter">
+                                B
+                            </span>
+
+                            <span>
+                                ${q.option2}
+                            </span>
+
+                        </div>
+
+                        <div
+                            class="option"
+                            data-index="${index}"
+                            data-option="3"
+                            onclick="selectOption(${index}, 3)"
+                        >
+
+                            <span class="option-letter">
+                                C
+                            </span>
+
+                            <span>
+                                ${q.option3}
+                            </span>
+
+                        </div>
+
+                        <div
+                            class="option"
+                            data-index="${index}"
+                            data-option="4"
+                            onclick="selectOption(${index}, 4)"
+                        >
+
+                            <span class="option-letter">
+                                D
+                            </span>
+
+                            <span>
+                                ${q.option4}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                container.appendChild(card);
+
+            });
+
+        }
+
+        function selectOption(
+            questionIndex,
+            optionNumber
+        ) {
+
+            document
+                .querySelectorAll(
+                    `.option[data-index="${questionIndex}"]`
+                )
+                .forEach(opt => {
+                    opt.classList.remove(
+                        'selected'
+                    );
+                });
+
+            document
+                .querySelector(
+                    `.option[data-index="${questionIndex}"][data-option="${optionNumber}"]`
+                )
+                .classList.add(
+                    'selected'
+                );
+
+        }
+
+        async function submitQuiz() {
+
+            clearInterval(timerInterval);
+
+            const answers = {};
+
+            questions.forEach(
+                (question, index) => {
+
+                    const selected =
+                        document.querySelector(
+                            `.option[data-index="${index}"].selected`
+                        );
+
+                    answers[question.id] =
+                        selected
+                            ? parseInt(
+                                selected.dataset.option
+                            )
+                            : 0;
+
+                }
+            );
+
+            try {
+
+                const response = await fetch(
+                    '/api/student/submit',
+                    {
+
+                        method: 'POST',
+
+                        credentials: 'include',
+
+                        headers: {
+                            'Content-Type':
+                                'application/json'
+                        },
+
+                        body: JSON.stringify({
+
+                            subject_id: quizId,
+
+                            answers
+
+                        })
+
+                    }
+                );
+
+                const result =
+                    await response.json();
+
+                showResult(result);
+
+            } catch (error) {
+
+                console.log(error);
+
+                alert(
+                    'Failed to submit quiz'
+                );
+
+            }
+
+        }
+
+        function showResult(result) {
+
+            let message;
+
+            let icon;
+
+            if (result.percentage >= 80) {
+
+                message = 'Excellent!';
+                icon = '🎉';
+
+            } else if (
+                result.percentage >= 60
+            ) {
+
+                message = 'Good Job!';
+                icon = '👍';
+
+            } else if (
+                result.percentage >= 40
+            ) {
+
+                message =
+                    'Keep Practicing';
+
+                icon = '💪';
+
+            } else {
+
+                message =
+                    'Need More Practice';
+
+                icon = '📚';
+
+            }
+
+            document.getElementById(
+                'quiz-container'
+            ).innerHTML = '';
+
+            document.getElementById(
+                'submit-container'
+            ).style.display = 'none';
+
+            document.getElementById(
+                'progress-box'
+            ).style.display = 'none';
+
+            const resultCard =
+                document.createElement('div');
+
+            resultCard.className =
+                'result-card';
+
+            resultCard.innerHTML = `
+
+                <div class="result-icon">
+                    ${icon}
+                </div>
+
+                <h2 class="result-title">
+                    ${message}
+                </h2>
+
+                <div class="result-score">
+                    ${result.percentage}%
+                </div>
+
+                <p class="result-details">
+
+                    ${result.score}
+                    out of
+                    ${result.total}
+                    correct
+
+                </p>
+
+                <a
+                    href="/student-panel.html"
+                    class="btn-home"
+                >
+                    Back to Home
+                </a>
+
+            `;
+
+            document
+                .getElementById(
+                    'quiz-container'
+                )
+                .appendChild(resultCard);
+
+        }
+
+        function goBack() {
+
+            window.location.href =
+                '/student-panel.html';
+
+        }
+
+        loadQuiz();
+
+    </script>
+
+</body>
+</html>
