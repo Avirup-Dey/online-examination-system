@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam System - Test Your Knowledge</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon">📝</div>
+            <span>Exam System</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="/login.html" class="nav-link login-link">Login</a>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#features" class="mobile-link" onclick="toggleMobileMenu()">Features</a>
+        <a href="#about" class="mobile-link" onclick="toggleMobileMenu()">About</a>
+        <a href="/login.html" class="mobile-link login-link">Login</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="grid-pattern"></div>
+            <div class="glow glow-1"></div>
+            <div class="glow glow-2"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span>Start Learning Today</span>
+            </div>
+            <h1 class="hero-title">
+                Master Your Knowledge with
+                <span class="highlight">Interactive Exams</span>
+            </h1>
+            <p class="hero-subtitle">
+                Challenge yourself with quizzes across various subjects. 
+                Track your progress, identify weak areas, and achieve your goals.
+            </p>
+            <div class="hero-actions">
+                <a href="/login.html" class="btn-primary">
+                    Get Started
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <button class="btn-secondary" onclick="scrollToFeatures()">
+                    Learn More
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Subjects</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">10K+</span>
+                    <span class="stat-label">Questions</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">95%</span>
+                    <span class="stat-label">Satisfaction</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card card-1">
+                <div class="card-icon">✓</div>
+                <div class="card-text">
+                    <span class="card-title">Instant Results</span>
+                    <span class="card-desc">Get your score immediately</span>
+                </div>
+            </div>
+            <div class="floating-card card-2">
+                <div class="card-icon">📊</div>
+                <div class="card-text">
+                    <span class="card-title">Progress Tracking</span>
+                    <span class="card-desc">Monitor your improvement</span>
+                </div>
+            </div>
+            <div class="floating-card card-3">
+                <div class="card-icon">🎯</div>
+                <div class="card-text">
+                    <span class="card-title">Detailed Analytics</span>
+                    <span class="card-desc">Know your strengths</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2>Why Choose Our Platform?</h2>
+            <p>Everything you need to excel in your studies</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h3>Multiple Subjects</h3>
+                <p>Access quizzes across various subjects and topics tailored for different skill levels.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <h3>Timed Tests</h3>
+                <p>Experience realistic exam conditions with timed quizzes to improve your speed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                </div>
+                <h3>Detailed Analytics</h3>
+                <p>View your performance analytics to identify areas for improvement.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
+                <h3>Instant Feedback</h3>
+                <p>Receive immediate feedback on your answers and learn from your mistakes.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                </div>
+                <h3>Secure & Private</h3>
+                <p>Your data is securely stored and your privacy is always protected.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <h3>Expert Content</h3>
+                <p>All quizzes are designed by subject matter experts to ensure quality.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Ready to Start Your Journey?</h2>
+            <p>Join thousands of students already improving their knowledge</p>
+            <a href="/login.html" class="btn-primary btn-large">
+                Get Started Now
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <footer class="footer" id="about">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="brand-icon">📝</div>
+                <span>Exam System</span>
+                <p>Your platform for knowledge assessment and improvement.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Exam System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function scrollToFeatures() {
+            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
